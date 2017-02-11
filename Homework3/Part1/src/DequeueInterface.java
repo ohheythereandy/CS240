@@ -10,14 +10,14 @@ public interface DequeueInterface<T> {
 
     /** Removes and returns the front/back entry of the dequeue.
      * @return The object at the front/back of the dequeue
-     * @throws EmptyQueueException if the dequeue is empty before the operation
+     * @throws java.util.NoSuchElementException if the dequeue is empty before the operation
      */
     public T removeFront();
     public T removeBack();
 
     /** Retrieves the the front/back entry of this dequeue.
      * @return The object at the front/back
-     * @throws EmptyQueueException if the dequeue is empty
+     * @throws java.util.NoSuchElementException if the dequeue is empty
      */
     public T getFront();
     public T getBack();
