@@ -2,7 +2,6 @@
  * Created by Andy on 2/9/17.
  */
 import java.util.Random;
-import java.util.jar.Pack200;
 
 public class RecursionSort extends IterativeSort{
 
@@ -60,32 +59,35 @@ public class RecursionSort extends IterativeSort{
         }
     }
 
-    private void merge(int[] array, int[] temp, int first, int mid, int last) {
-        int beginHalf1 = first;
-        int endHalf1 = mid;
-        int beginHalf2 = mid+1;
-        int endHalf2 = last;
-        int index = 0;
+    private void merge(int[] array, int[]temp, int low, int middle, int high) {
 
-        while((beginHalf1 <= endHalf1) && (beginHalf2 <= endHalf2)){
-            if(array[beginHalf1] <= array[beginHalf2])
-                temp[index] = array[beginHalf1++];
-            else{
-                temp[index] = array[beginHalf2++];
+        // Copy both parts into the helper array
+        for (int i = low; i <= high; i++) {
+            temp[i] = array[i];
+        }
+
+        int i = low;
+        int j = middle + 1;
+        int k = low;
+        // Copy the smallest values from either the left or the right side back
+        // to the original array
+        while (i <= middle && j <= high) {
+            if (temp[i] <= array[j]) {
+                array[k] = temp[i];
+                i++;
+            } else {
+                array[k] = temp[j];
+                j++;
             }
-
-            index++;
+            k++;
+        }
+        // Copy the rest of the left side of the array into the target array
+        while (i <= middle) {
+            array[k] = temp[i];
+            k++;
+            i++;
         }
 
-        while(beginHalf1 <= endHalf1){
-            temp[index++] = array[beginHalf1++];
-        }
-        while(beginHalf2 <= endHalf2) {
-            temp[index++] = array[beginHalf2++];
-        }
-
-        for(int i=0; i < index; i++)
-            array[i] = temp[i];
     }
 
     private int partition(int[] a, int start, int end){
