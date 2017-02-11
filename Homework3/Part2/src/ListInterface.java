@@ -73,4 +73,4 @@ public interface ListInterface<T> {
      * @return true if empty, otherwise is false
      */
     public boolean isEmpty();
-}
+}// end ListInterface
