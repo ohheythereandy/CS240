@@ -15,7 +15,7 @@ public class Main {
 
         for(int i = 0; i < array.length; i++){
             array[i] = rand.nextInt(100);
-            temp[i] = array[i];
+            temp[i] = i;
         }
 
         for(int number : array){

@@ -42,41 +42,49 @@ public class RecursionSort extends IterativeSort{
             a[end] = nextInsert;
         }
     }
+    public static void printArray(int[] array){
+        for (int i = 0; i < array.length; i++)
+            System.out.print(array[i] + " ");
+        System.out.println();
+    }
+
 
     public void mergeSort(int[] array , int[] temp, int first, int last){
         if(first < last){
             int mid = (first + last) / 2;
             mergeSort(array , temp , first, mid);
+
             mergeSort(array , temp, mid+1 , last);
-            merge(array , temp, first , mid+1  , last);
+
+            merge(array , temp, first , mid , last);
         }
     }
 
-    private void merge(int[] array, int[] temp, int first, int center, int last) {
-        int left = first;
-        int leftEnd = center -1;
-        int right = center;
-        int rightEnd = last;
+    private void merge(int[] array, int[] temp, int first, int mid, int last) {
+        int beginHalf1 = first;
+        int endHalf1 = mid;
+        int beginHalf2 = mid+1;
+        int endHalf2 = last;
         int index = 0;
 
-        while((left <= leftEnd) && (right <= rightEnd)){
-            if(array[left] < array[right])
-                temp[index] = array[left++];
+        while((beginHalf1 <= endHalf1) && (beginHalf2 <= endHalf2)){
+            if(array[beginHalf1] <= array[beginHalf2])
+                temp[index] = array[beginHalf1++];
             else{
-                temp[index] = array[right++];
+                temp[index] = array[beginHalf2++];
             }
 
             index++;
         }
 
-        while(left <= leftEnd){
-            temp[index++] = array[left++];
+        while(beginHalf1 <= endHalf1){
+            temp[index++] = array[beginHalf1++];
         }
-        while(right <= rightEnd) {
-            temp[index++] = array[right++];
+        while(beginHalf2 <= endHalf2) {
+            temp[index++] = array[beginHalf2++];
         }
 
-        for(int i= 0 ; i < last; i++)
+        for(int i=0; i < index; i++)
             array[i] = temp[i];
     }
 
