@@ -1,8 +1,7 @@
 /**
  * Created by Andy on 2/9/17.
  */
-import java.util.ArrayList;
-import java.util.List;
+
 public class IterativeSort {
 
     public int[] selectiveSort(int[] unsortedArray) {
@@ -51,66 +50,60 @@ public class IterativeSort {
         array[index+1] = nextInsert;
     }
 
-    public void shellSort(int [] array) {
-        int i, j, k, h, hCount, increments[] = new int[10];
-        // create an number of increments h
-        for (h = 1, i = 0; h < array.length; i++) {
-            increments[i] = h;
-            h = 2 * i + 1;
-        }
-        // loop on the number of different increments h
-        for (i--; i >= 0; i--) {
-            h = increments[i];
+    public void shellSort(int[] a) {
+        int n = a.length;
 
-            for (hCount = h; hCount < 2 * h; hCount++) {
-                for (j = hCount; j < array.length; ) {
-                    int tmp =  array[j];
-                    k = j;
-                    while (k - h >= 0 && tmp <array[k - h] ) {
-                        array[k] = array[k - h];
-                        k -= h;
-                    }
-                    array[k] = tmp;
-                    j += h;
-                }
+
+        for (int gap = n / 2; gap > 0; gap /= 2) {
+
+            for (int i = gap; i < n; i += 1) {
+
+                int temp = a[i];
+
+
+                int j;
+                for (j = i; j >= gap && a[j - gap] > temp; j -= gap)
+                    a[j] = a[j - gap];
+
+                a[j] = temp;
             }
+        }
+
+    }
+
+    public void radixSort(int[] a, int length , int maxDigits){
+
+        for(int exp = 1 ; maxDigits / exp > 0 ; exp*= 10){
+            countSort(a,length,exp);
         }
     }
 
-    public void radixSort(int[] input) {
-        final int RAD = 10;
-        // declare and initialize bucket[]
-        List<Integer>[] bucket = new ArrayList[RAD];
-        for (int i = 0; i < bucket.length; i++) {
-            bucket[i] = new ArrayList<>();
+    public void countSort(int a[], int length, int exp){
+        int output[] = new int[length]; // output array
+        int count[] = new int[10];
+
+        for(int number : count)
+            count[number] = 0;
+
+        // Store count of occurrences in count[]
+        for (int i = 0; i < length; i++)
+            count[ (a[i]/exp)%10 ]++;
+
+        // Change count[i] so that count[i] now contains
+        // actual position of this digit in output[]
+        for (int i = 1; i < 10; i++)
+            count[i] += count[i - 1];
+
+
+        for (int i = length - 1; i >= 0; i--)
+        {
+            output[count[ (a[i]/exp)%10 ] - 1] = a[i];
+            count[ (a[i]/exp)%10 ]--;
         }
 
 
-        boolean maxLength = false;
-        int temp = -1, placement = 1;
-        while (!maxLength) {
-            maxLength = true;
-            for (Integer i : input) {
-                temp = i / placement;
-                bucket[temp % RAD].add(i);
-                if (maxLength && temp > 0) {
-                    maxLength = false;
-                }
-            }
-            int a = 0;
-            for (int b = 0; b < RAD; b++) {
-                for (Integer i : bucket[b]) {
-                    input[a++] = i;
-                }
-                bucket[b].clear();
-            }
-            // move to next digit
-            placement *= RAD;
-        }
+        for (int i = 0; i < length; i++)
+            a[i] = output[i];
     }
-
-
-
-
 
 }

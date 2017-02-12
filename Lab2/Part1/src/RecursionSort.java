@@ -90,28 +90,56 @@ public class RecursionSort extends IterativeSort{
 
     }
 
-    private int partition(int[] a, int start, int end){
-        Random ran = new Random();
-        int index = start+ran.nextInt(end - start + 1); //set random index pivot value
-        int pivot = a[index];//sets the random pivot value
-        swap(a,index, end); // puts random pivot value at the end of array
-        index = start; // set partition index to the beginning of the array
-        for (int i= start; i < end; i++) {
-            if (a[i]<pivot) {
-                swap(a,index, i);
-                index++;
-            }
-        }
-        swap(a,index, end);
-        return index;
+    public void quickSort(int[] data){
+        quickSort(data,0, data.length -1);
     }
 
+    public void quickSort(int[] data, int left, int right){
+        int pivotValue = data[ (left +right) /2 ];
+        int i = left;
+        int j = right;
 
-    public void quickSort(int[] a, int start, int end){
-        if(end > start){
-            int index = partition(a,start,end);
-            quickSort(a, start, index - 1);
-            quickSort(a, index + 1, end);
+        while(i<= j){
+            //Find leftmost value greater than or equal to pivot
+            while(data[i] < pivotValue) i++;
+
+            while(data[j] > pivotValue)j--;
+
+            if(i <=j ) {
+                swap(data, i, j);
+                i++;
+                j--;
+            }
+        }
+
+        if(left < j)
+            quickSort(data, left, j);
+        if(i <right)
+            quickSort(data ,i ,right);
+    }
+
+    public void incrementalInsertionSort(int[] a, int first, int last, int space) {
+        for(int unsorted = first + space ; unsorted <= last ; unsorted+=space  ){
+            int nextToInsert = a[unsorted]; //element at top
+            int index = unsorted - space; //element at beginning
+
+            //while element at beginning is greater than element at end
+            while((index >= first) && (nextToInsert < a[index])) {
+                a[index+space] = a[index];
+                index = index -space;
+            }
+            a[index +space] = nextToInsert;
+        }
+    }
+
+    public void shellSort(int[] array, int first, int last){
+        int space = array.length -1 ;
+
+        while(space > 0){
+            for (int begin = first ; begin < first + space  ; begin++){
+                incrementalInsertionSort(array, begin, last, space);
+            }
+            space = space /2;
         }
     }
 
@@ -120,6 +148,7 @@ public class RecursionSort extends IterativeSort{
         array[lowest] = array[index];
         array[index]= temp;
     }
+
 
 
 

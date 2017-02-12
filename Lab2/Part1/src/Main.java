@@ -14,7 +14,7 @@ public class Main {
 
 
         for(int i = 0; i < array.length; i++){
-            array[i] = rand.nextInt(100);
+            array[i] = rand.nextInt(1000);
             temp[i] = i;
         }
 
@@ -22,13 +22,7 @@ public class Main {
             System.out.print(number + " ");
         }
 
-        //rSort.selectionSort(array , 0 , array.length-1);
-        //sSort.insertionSortIterative(array, 0 , array.length-1);
-        //rSort.insertionSort(array, 0 , array.length-1);
-        //rSort.mergeSort(array, temp , 0 , array.length -1);
-        //sSort.shellSort(array);
-        //sSort.radixSort(array);
-        //rSort.quickSort(array, 0 , array.length-1);
+        rSort.radixSort(array , array.length , 3);
 
         System.out.println(" ");
 
