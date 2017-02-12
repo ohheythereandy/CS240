@@ -120,32 +120,92 @@ public class IterativeSort {
         }
     } // end mergeSort
 
-    private void merge(int[] a, int[] tmp, int iLeft, int iMiddle, int iRight) {
+    private void merge(int[] a, int[] tmp, int left, int middle, int right) {
         int i, j, k;
 
-        i = iLeft;     // Re-adjust the indices
-        j = iMiddle;
-        k = iLeft;
+        i = left;
+        j = middle;
+        k = left;
 
-        while (i < iMiddle || j < iRight)    // It's the same algorithm !
+        while (i < middle || j < right)
         {
-            if (i < iMiddle && j < iRight) {  // Both array have elements
+            if (i < middle && j < right) {  // Both array have elements
                 if (a[i] < a[j])
                     tmp[k++] = a[i++];
                 else
                     tmp[k++] = a[j++];
             }
-            else if (i == iMiddle)
+            else if (i == middle)
                 tmp[k++] = a[j++];      // a is empty
-            else if (j == iRight)
+            else if (j == right)
                 tmp[k++] = a[i++];      // b is empty
         }
-
-      /* =================================
-         Copy tmp[] back to a[]
-         ================================= */
-        for (i = iLeft; i < iRight; i++)
+        for (i = left; i < right; i++)
             a[i] = tmp[i];
-    }
+    } //end merge
+
+    void quickSort(int a[], int low, int high)
+    {
+
+        int temp[] = new int[high-low+1];
+
+        // initialize top
+        int top = -1;
+
+        // push initial values
+        temp[++top] = low;
+        temp[++top] = high;
+
+
+        while (top >= 0)
+        {
+
+            high = temp[top--];
+            low = temp[top--];
+
+            // set pivot element at it's proper position
+            int p = partition(a, low, high);
+
+            // If there are elements on left side of pivot,
+            if ( p-1 > low )
+            {
+                temp[ ++top ] = low;
+                temp[ ++top ] = p - 1;
+            }
+
+            // If there are elements on right side of pivot,
+            if ( p+1 < high )
+            {
+                temp[ ++top ] = p + 1;
+                temp[ ++top ] = high;
+            }
+        }
+    } //end quickSort
+
+
+    private int partition (int arr[], int low, int high)
+    {
+        int x = arr[high];
+        int i = (low - 1);
+
+        for (int j = low; j <= high- 1; j++)
+        {
+            if (arr[j] <= x)
+            {
+                i++;
+                // swap arr[i] and arr[j]
+                swap(arr,i,j);
+            }
+        }
+        // swap arr[i+1] and arr[h]
+        swap(arr,i+1,high);
+        return (i + 1);
+    } //end partition
+
+    private void swap(int[] array, int index , int lowest){
+        int temp = array[lowest];
+        array[lowest] = array[index];
+        array[index]= temp;
+    }//end swap
 
 }
