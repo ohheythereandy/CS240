@@ -22,13 +22,12 @@ public class Main {
             System.out.print(number + " ");
         }
 
-        rSort.radixSort(array , array.length , 3);
+        sSort.mergeSort(array ,temp ,array.length  );
 
         System.out.println(" ");
 
         for(int number : array)
             System.out.print(number + " ");
-
 
     }
 }

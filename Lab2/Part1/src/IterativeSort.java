@@ -1,21 +1,22 @@
 /**
  * Created by Andy on 2/9/17.
  */
-
+import java.util.ArrayList;
+import java.util.List;
 public class IterativeSort {
 
     public int[] selectiveSort(int[] unsortedArray) {
 
         int temp = 0;
-        int min =0;
+        int min = 0;
 
         for (int index = 0; index < unsortedArray.length; index++) {
 
             min = unsortedArray[index];
 
-            for (int j = index + 1 ; j < unsortedArray.length; j++) {
+            for (int j = index + 1; j < unsortedArray.length; j++) {
 
-                if(min > unsortedArray[j]){
+                if (min > unsortedArray[j]) {
                     min = unsortedArray[j];
                     temp = unsortedArray[j];
                     unsortedArray[j] = unsortedArray[index];
@@ -26,28 +27,27 @@ public class IterativeSort {
             }
 
 
-
         }
 
         return unsortedArray;
     }
 
-    public void insertionSortIterative(int[] unsortedArray, int first, int last){
-        for(int index = first + 1 ; index < unsortedArray.length; index++){
+    public void insertionSortIterative(int[] unsortedArray, int first, int last) {
+        for (int index = first + 1; index < unsortedArray.length; index++) {
             int nextToInsert = unsortedArray[index];
-            insertInOrder(nextToInsert, unsortedArray, first , index-1);
+            insertInOrder(nextToInsert, unsortedArray, first, index - 1);
         }
     }
 
-    public void insertInOrder(int nextInsert , int [] array, int begin, int end){
+    public void insertInOrder(int nextInsert, int[] array, int begin, int end) {
         int index = end;
 
-        while((index >= begin) && (nextInsert<array[index])){
-            array[index+1] = array[index];
+        while ((index >= begin) && (nextInsert < array[index])) {
+            array[index + 1] = array[index];
             index--;
         }
 
-        array[index+1] = nextInsert;
+        array[index + 1] = nextInsert;
     }
 
     public void shellSort(int[] a) {
@@ -71,39 +71,81 @@ public class IterativeSort {
 
     }
 
-    public void radixSort(int[] a, int length , int maxDigits){
-
-        for(int exp = 1 ; maxDigits / exp > 0 ; exp*= 10){
-            countSort(a,length,exp);
+    public void radixSort(int[] input) {
+        final int RADIX = 10;
+        // declare and initialize bucket[]
+        List<Integer>[] bucket = new ArrayList[RADIX];
+        for (int i = 0; i < bucket.length; i++) {
+            bucket[i] = new ArrayList<Integer>();
         }
-    }
-
-    public void countSort(int a[], int length, int exp){
-        int output[] = new int[length]; // output array
-        int count[] = new int[10];
-
-        for(int number : count)
-            count[number] = 0;
-
-        // Store count of occurrences in count[]
-        for (int i = 0; i < length; i++)
-            count[ (a[i]/exp)%10 ]++;
-
-        // Change count[i] so that count[i] now contains
-        // actual position of this digit in output[]
-        for (int i = 1; i < 10; i++)
-            count[i] += count[i - 1];
 
 
-        for (int i = length - 1; i >= 0; i--)
+        boolean maxLength = false;
+        int tmp = 0;
+        int placement = 1;
+        while (!maxLength) {
+            maxLength = true;
+            // split input between lists
+            for (Integer i : input) {
+                tmp = i / placement;
+                bucket[tmp % RADIX].add(i);
+                if (maxLength && tmp > 0) {
+                    maxLength = false;
+                }
+            }
+            // empty lists into input array
+            int a = 0;
+            for (int b = 0; b < RADIX; b++) {
+                for (Integer i : bucket[b]) {
+                    input[a++] = i;
+                }
+                bucket[b].clear();
+            }
+            // move to next digit
+            placement *= RADIX;
+        }
+    }//end radix sort
+
+    public void mergeSort(int[] a, int[] temp, int length) {
+
+        for (int currentSize = 1; currentSize < length ; currentSize = 2 * currentSize) {
+
+            for (int start = 0; start < length; start += 2 * currentSize) {
+                int left = start;
+                int mid = start + currentSize;
+                int end = start + 2 * currentSize;
+
+                merge(a, temp, start, mid, end);
+            }
+        }
+    } // end mergeSort
+
+    private void merge(int[] a, int[] tmp, int iLeft, int iMiddle, int iRight) {
+        int i, j, k;
+
+        i = iLeft;     // Re-adjust the indices
+        j = iMiddle;
+        k = iLeft;
+
+        while (i < iMiddle || j < iRight)    // It's the same algorithm !
         {
-            output[count[ (a[i]/exp)%10 ] - 1] = a[i];
-            count[ (a[i]/exp)%10 ]--;
+            if (i < iMiddle && j < iRight) {  // Both array have elements
+                if (a[i] < a[j])
+                    tmp[k++] = a[i++];
+                else
+                    tmp[k++] = a[j++];
+            }
+            else if (i == iMiddle)
+                tmp[k++] = a[j++];      // a is empty
+            else if (j == iRight)
+                tmp[k++] = a[i++];      // b is empty
         }
 
-
-        for (int i = 0; i < length; i++)
-            a[i] = output[i];
+      /* =================================
+         Copy tmp[] back to a[]
+         ================================= */
+        for (i = iLeft; i < iRight; i++)
+            a[i] = tmp[i];
     }
 
 }
