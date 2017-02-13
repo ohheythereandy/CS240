@@ -22,9 +22,10 @@ public class Main {
             System.out.print(number + " ");
         }
 
-        sSort.quickSort(array , 0 , array.length -1);
+
 
         System.out.println(" ");
+        sSort.insertionSort(array, 0, array.length-1);
 
         for(int number : array)
             System.out.print(number + " ");

@@ -24,7 +24,7 @@ public class RecursionSort extends IterativeSort{
 
     public void insertionSort(int[]array , int first, int last){
         if(first < last){
-            insertionSortIterative(array , first, last-1);
+            insertionSort(array , first, last-1);
             insertInOrder(array[last], array, first, last -1);
         }
     }
