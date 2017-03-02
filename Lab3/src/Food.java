@@ -3,8 +3,20 @@
  */
 public class Food {
 
-    public Food(){
-        int expirationDate;
+    private int expirationCounter = 0;
+    StackInterface<Integer> givenStack;
+
+
+    public Food(int expirationDate){
+        expirationCounter = expirationDate;
+        givenStack = new FoodStack<>();
     }
 
+    public Food(){
+
+    }
+
+    public int getExpirationDate (){
+        return expirationCounter;
+    }
 }

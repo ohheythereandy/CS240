@@ -1,47 +1,60 @@
-/**
- * Created by Andy on 2/11/17.
- */
-import java.util.Vector;
+
 public class MenuList<T> implements ListInterface<T> {
 
-    private Vector<T> list;
-    private boolean initialized;
-    private static final int DEFAULT_CAPACITY = 20;
-    private static final int MAX_Capacity = 10000;
+    private Node firstNode;
+    private int numberOfEntries;
 
-    public MenuList(){
-        this (DEFAULT_CAPACITY);
+    public MenuList() {
+        initializeDataFields();
     }
-
-    public MenuList(int initialCapacity){
-        checkCapacity(initialCapacity);
-        list = new Vector<>(initialCapacity);
-        initialized = true;
-    }
-
     /**
      * Adds newEntry to the end of the list
      * List size increased by 1
      * @param newEntry Entry to be added
      */
     public void add(T newEntry){
-        checkInitialization();
-        list.add(newEntry);
-    }
+
+        Node newNode = new Node(newEntry);
+
+        if(isEmpty())
+            firstNode = newNode;
+        else {
+            Node lastNode = getNodeAt(numberOfEntries);
+            lastNode.setNextNode(newNode);
+        }
+        numberOfEntries++;
+    }//end add
 
     /**
      * Adds newEntry at the position indicated . Entry at position is shifted to next highest position
      * List size increased by one
      * @param newEntry is the object to be added within list
-     * @param position is the integer representing position that newEntry is inserted to
+     * @param newPosition is the integer representing position that newEntry is inserted to
      * @throws IndexOutOfBoundsException if position indicated is less than one or longer than list size
      */
-    public void add(T newEntry, int position){
-        checkInitialization();
-        checkListPosition(position);
+    public void add(T newEntry, int newPosition){
 
-        list.add(position, newEntry);
-    }
+        if((newPosition>= 1) && (newPosition <= numberOfEntries+1)){
+
+            Node newNode = new Node(newEntry);
+
+            if(newPosition ==1){
+                newNode.setNextNode(firstNode);
+                firstNode = newNode;
+            }
+            else {
+                Node nodeBefore = getNodeAt(newPosition-1);
+                Node nodeAfter = nodeBefore.getNextNode();
+                nodeBefore.setNextNode(newNode);
+                newNode.setNextNode(nodeAfter);
+            }
+
+            numberOfEntries++;
+        }
+        else{
+            throw new IndexOutOfBoundsException("Illegal Position given.");
+        }
+    }//end add
 
     /**
      * Removes entry at indicated position and returns the object that was removed .
@@ -50,17 +63,36 @@ public class MenuList<T> implements ListInterface<T> {
      * @throws IndexOutOfBoundsException if position indicated is less than one or longer than list size
      */
     public T remove(int position){
-        checkInitialization();
-        checkListPosition(position);
-        T remove = list.remove(position);
-        return remove;
-    }
+
+        T result = null;
+        if((position >= 1) && (position <= numberOfEntries)){
+
+            assert !isEmpty();
+            if(position==1){
+                result = firstNode.getData();
+                firstNode = firstNode.getNextNode();
+            }
+            else {
+                Node nodeBefore = getNodeAt(position - 1);
+                Node nodeRemove = nodeBefore.getNextNode();
+                Node nodeAfter = nodeRemove.getNextNode();
+                nodeBefore.setNextNode(nodeAfter);
+                result = nodeRemove.getData();
+            } //end inner if loop
+
+            numberOfEntries--;
+            return result;
+        }
+        else{
+            throw new IndexOutOfBoundsException("Illegal position given.");
+        }// end outer if loop
+    }//end remove
 
     /**
      * Removes all entries from list
      */
     public void clear(){
-        list.clear();
+        initializeDataFields();
     }
 
     /**
@@ -71,13 +103,17 @@ public class MenuList<T> implements ListInterface<T> {
      * @throws IndexOutOfBoundsException if given a position > 0 or greater than list size
      * */
     public T replace(int position , T newEntry){
-        checkInitialization();
-        checkListPosition( position);
-        T original = list.remove(position);
-        list.add(position , newEntry);
 
-        return original;
-    }
+        if((position >= 1) && (position <= numberOfEntries)){
+            assert !isEmpty();
+            Node nodeToReplace = getNodeAt(position);
+            T originalEntry = nodeToReplace.getData();
+            nodeToReplace.setData(newEntry);
+            return originalEntry;
+        }
+        else
+            throw new IndexOutOfBoundsException("Illegal Position given");
+    }// end replace
 
     /**
      * Finds and returns the object at the indicated position within the list
@@ -86,24 +122,31 @@ public class MenuList<T> implements ListInterface<T> {
      * @throws IndexOutOfBoundsException if given a position >0 or greater than list size
      */
     public T getEntry(int position){
-        checkInitialization();
-        checkListPosition(position);
-        T anEntry = list.get(position);
-        return anEntry;
-    }
+
+        if((position >= 1) && (position <= numberOfEntries)){
+            assert !isEmpty();
+            return getNodeAt(position).getData();
+        }
+        else
+            throw new IndexOutOfBoundsException("Illegal position given");
+    }// end getEntry
 
     /**
      * Retrieves all entries within the list in the order in which they occur
      * @return An array of all the entries in the list
      */
     public T[] toArray(){
-
-
-        T[] tempList = (T[])list.toArray();
-
-
-        return tempList;
-    }
+        @SuppressWarnings("unchecked")
+        T[] result = (T[]) new Object[numberOfEntries];
+        int index = 0;
+        Node currentNode = firstNode;
+        while((index < numberOfEntries) && (currentNode!= null)){
+            result[index] = currentNode.getData();
+            currentNode = currentNode.getNextNode();
+            index++;
+        }
+        return result;
+    } // end toArray
 
     /**
      * Checks for given object in the list.
@@ -111,9 +154,15 @@ public class MenuList<T> implements ListInterface<T> {
      * @return true if anEntry is found within the list. False otherwise
      */
     public boolean checkEntry(T anEntry){
-        checkInitialization();
-        boolean found = list.contains(anEntry);
+        boolean found = false;
+        Node currentNode = firstNode;
 
+        while(!found && currentNode!= null){
+            if(anEntry.equals(currentNode.getData()))
+                found = true;
+            else
+                currentNode = currentNode.getNextNode();
+        }
         return found;
     }
 
@@ -122,8 +171,7 @@ public class MenuList<T> implements ListInterface<T> {
      * @return A number representing the number of objects in the list
      */
     public int checkSize(){
-        checkInitialization();
-        return list.size();
+        return numberOfEntries;
     }
 
     /**
@@ -131,24 +179,75 @@ public class MenuList<T> implements ListInterface<T> {
      * @return true if empty, otherwise is false
      */
     public boolean isEmpty(){
-        return list.isEmpty();
-    }
 
-    private void checkInitialization(){
-        if(!initialized)
-            throw new SecurityException("VectorStack not properly initialized");
-    }
-
-    private void checkListPosition(int listPosition){
-        if((listPosition > 0) || (listPosition > checkSize()))
-            throw new IndexOutOfBoundsException("Invalid list position.");
-    }
-
-    private void checkCapacity(int desiredCapacity){
-        if(desiredCapacity > MAX_Capacity){
-            throw new IllegalStateException("Attempt to create a list" +
-                    "whose capacity exceeds allowed maximum of "
-                    + MAX_Capacity);
+        boolean result;
+        if(numberOfEntries ==0) {
+            assert firstNode == null;
+            result = true;
         }
+        else{
+            assert firstNode != null;
+            result = false;
+        }
+
+        return result;
+    }//end isEmpty
+
+    //Initializes the class's data fields to indicate an empty list
+    private void initializeDataFields(){
+        firstNode = null;
+        numberOfEntries=0;
+    }//end initializeDataFields
+
+    /**
+     * Gets node at indicated position
+     * @param givenPosition Position to get node at
+     * @return Node at given position
+     */
+    private Node getNodeAt(int givenPosition){
+        assert((firstNode != null) && (givenPosition <= numberOfEntries)
+                &&(1<= givenPosition));
+        Node currentNode = firstNode;
+
+        for(int counter =1 ; counter < givenPosition; counter++)
+            currentNode = currentNode.getNextNode();
+        return currentNode;
+    }
+
+
+    private class Node
+    {
+        private T data;
+        private Node next;
+
+        private Node(T dataPortion){
+            this(dataPortion, null);
+        }
+
+        private Node(T dataPortion , Node nextNode)
+        {
+            data = dataPortion;
+            next = nextNode;
+        }
+
+        private T getData()
+        {
+            return data;
+        }
+
+        private void setData(T newData)
+        {
+            data = newData;
+        }
+
+        private Node getNextNode() {
+            return next;
+        }
+
+        private void setNextNode(Node nextNode) {
+            next = nextNode;
+        }
+
+
     }
 }

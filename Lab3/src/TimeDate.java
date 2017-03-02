@@ -6,20 +6,20 @@ import java.util.Date;
 
 public class TimeDate {
     private Calendar calendar;
-    private final String startDate = "03012017 09:00";
-    private final String endDate = "401"; // feb 1
-    private final String closingTime = "19:00"; // 7pm
+    private  String startDate = "03012017 09:00";
+    private  String endDate = "401";
+    private  String closingTime = "19:00";
     private Date date;
     private DateFormat dateFormat;
     private DateFormat intFormat;
     private DateFormat timeFormat;
-    private DateFormat halfDateFormat;
+    private DateFormat halfFormat;
     private DateFormat reportFormat;
 
 
     public TimeDate() {
         dateFormat = new SimpleDateFormat("MMddyyyy HH:mm");
-        halfDateFormat = new SimpleDateFormat("MMddyyyy");
+        halfFormat = new SimpleDateFormat("MMddyyyy");
         intFormat = new SimpleDateFormat("Mdd");
         timeFormat = new SimpleDateFormat("HH:mm");
         reportFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -40,7 +40,7 @@ public class TimeDate {
 
     public void nextDay() {
         calendar.add(Calendar.DATE, 1);
-        String resetTime = halfDateFormat.format(calendar.getTime())+" 09:00";
+        String resetTime = halfFormat.format(calendar.getTime())+" 09:00";
         try {
             date = dateFormat.parse(resetTime);
         } catch (ParseException e) {
@@ -48,11 +48,6 @@ public class TimeDate {
         }
     }
 
-
-    public int dateToInt() {
-        int intDate = Integer.parseInt((intFormat.format(date)));
-        return intDate;
-    }
 
     public boolean isEndOfMarch() {
         return endDate.equals(this.getDate());
