@@ -10,6 +10,7 @@ public class Food {
     public Food(int expirationDate){
         expirationCounter = expirationDate;
         givenStack = new FoodStack<>();
+        givenStack.push(expirationDate);
     }
 
     public Food(){
