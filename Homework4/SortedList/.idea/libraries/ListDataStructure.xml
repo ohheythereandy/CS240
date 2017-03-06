@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="ListDataStructure">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../ListDataStructure" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../ListDataStructure/src" />
+    </SOURCES>
+  </library>
+</component>
