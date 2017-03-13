@@ -1,4 +1,5 @@
-
+import java.util.NoSuchElementException;
+import java.util.Iterator;
 /**
  * Created by Andy on 2/8/17.
  *
@@ -48,7 +49,7 @@ public class LinkedQueue <T> implements QueueInterface<T> {
      @return  The object at the front of the queue. */
     public T getFront(){
         if(isEmpty()){
-            throw new EmptyStackException();
+            throw new NoSuchElementException();
         }
         else
             return firstNode.getData();
@@ -66,6 +67,34 @@ public class LinkedQueue <T> implements QueueInterface<T> {
         firstNode= null;
         lastNode = null;
 
+    }
+
+    public Iterator<T> getIterator(){
+        return new LinkedQueueIterator();
+    }
+
+    private class LinkedQueueIterator implements Iterator<T>{
+
+        private Node currentNode;
+        public LinkedQueueIterator(){
+            currentNode = firstNode;
+        }
+
+        public boolean hasNext(){
+            return currentNode !=null;
+        }
+
+        public T next(){
+            if(!hasNext())
+                throw new NoSuchElementException();
+            T result = currentNode.getData();
+            currentNode = currentNode.next;
+            return result;
+        }
+
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
     }
     private class Node{
         private T data ; //Entry in Stack

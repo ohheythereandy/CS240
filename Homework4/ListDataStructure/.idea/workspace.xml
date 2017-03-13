@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b48de236-4780-453c-89b9-e05c51a169e0" name="Default" comment="Implemented iterator for LinkedList , created method to retrieve iterator">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+    <list default="true" id="b48de236-4780-453c-89b9-e05c51a169e0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ArrayList.java" afterPath="$PROJECT_DIR$/src/ArrayList.java" />
     </list>
     <ignored path="ListDataStructure.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -121,7 +119,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-46" />
+    <option name="x" value="14" />
     <option name="y" value="23" />
     <option name="width" value="819" />
     <option name="height" value="752" />
@@ -643,7 +641,7 @@
       <option name="presentableId" value="Default" />
       <updated>1488749687270</updated>
       <workItem from="1488749688953" duration="3877000" />
-      <workItem from="1489407784151" duration="750000" />
+      <workItem from="1489407784151" duration="775000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented iterator for LinkedList , created method to retrieve iterator">
       <created>1489408245215</created>
@@ -652,14 +650,21 @@
       <option name="project" value="LOCAL" />
       <updated>1489408245215</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Implemented iterator for ArrayList , created method to retrieve iterator">
+      <created>1489408550593</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1489408550593</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4627000" />
+    <option name="totallyTimeSpent" value="4652000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-46" y="23" width="819" height="752" extended-state="0" />
+    <frame x="14" y="23" width="819" height="752" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -702,7 +707,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Implemented iterator for LinkedList , created method to retrieve iterator" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented iterator for LinkedList , created method to retrieve iterator" />
+    <MESSAGE value="Implemented iterator for ArrayList , created method to retrieve iterator" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented iterator for ArrayList , created method to retrieve iterator" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
