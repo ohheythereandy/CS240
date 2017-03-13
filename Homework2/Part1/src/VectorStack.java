@@ -1,5 +1,7 @@
 import java.util.EmptyStackException;
+import java.util.NoSuchElementException;
 import java.util.Vector;
+import java.util.Iterator;
 
 /**
  * Created by Andy on 2/7/17.
@@ -80,5 +82,39 @@ public class VectorStack<T> implements StackInterface<T> {
                     "whose capacity exceeds allowed maximum of "
                     + MAX_CAPACITY);
     }
+
+    public Iterator<T> getStackIterator(){
+        return new VectorStackIterator();
+    }
+
+    private class VectorStackIterator implements Iterator<T>{
+
+        private int index;
+
+        public VectorStackIterator(){
+            index = stack.size()-1;
+        }//end constructor
+
+        public boolean hasNext(){
+            return index >= 0;
+        }//end hasNext
+
+        public T next(){
+            T result;
+
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
+            else{
+                result = stack.elementAt(index);
+                index--;
+                return result;
+            }
+        }// end next
+
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }// end remove
+    }//end Vector StackIterator
 
 }
