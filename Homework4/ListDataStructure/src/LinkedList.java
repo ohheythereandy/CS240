@@ -1,6 +1,9 @@
 /**
  * Created by Andy on 2/13/17.
  */
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public class LinkedList<T> implements ListInterface<T> {
 
     private Node firstNode;
@@ -216,6 +219,38 @@ public class LinkedList<T> implements ListInterface<T> {
         return currentNode;
     }
 
+    public Iterator<T> getIterator(){
+        return new LListIterator();
+    }
+
+    private class LListIterator implements Iterator<T>{
+
+        private Node currentNode;
+
+        public LListIterator(){
+            currentNode = firstNode;
+        }
+
+        public boolean hasNext(){
+            return currentNode != null;
+        }
+
+        public T next(){
+            T data;
+
+            if(currentNode == null)
+                throw new NoSuchElementException();
+            else{
+                data = currentNode.getData();
+                currentNode = currentNode.next;
+                return data;
+            }
+        }
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
+
+    }
 
     private class Node
     {
@@ -251,5 +286,6 @@ public class LinkedList<T> implements ListInterface<T> {
         }
 
 
-    }
+    }//end node
+
 }
