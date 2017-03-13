@@ -1,6 +1,8 @@
 /**
  * Created by Andy on 2/8/17.
- */
+ **/
+import java.util.NoSuchElementException;
+import java.util.Iterator;
 public class TwoPartCircularLinkedQueue<T> implements QueueInterface<T>{
 
     private Node queueNode;
@@ -41,7 +43,7 @@ public class TwoPartCircularLinkedQueue<T> implements QueueInterface<T>{
      @throws  EmptyQueueException if the queue is empty. */
     public T getFront(){
         if(isEmpty())
-            throw new EmptyQueueException();
+            throw new NoSuchElementException();
         else
             return queueNode.getData();
 
@@ -60,6 +62,34 @@ public class TwoPartCircularLinkedQueue<T> implements QueueInterface<T>{
 
     private boolean isChainFull(){
         return queueNode == freeNode.getNextNode();
+    }
+
+    public Iterator<T> getIterator(){
+        return new TwoPartLinkedQueueIterator();
+    }
+
+    private class TwoPartLinkedQueueIterator implements Iterator<T>{
+
+        private Node currentNode;
+
+        public TwoPartLinkedQueueIterator(){
+            currentNode = queueNode;
+        }
+        public boolean hasNext(){
+            return currentNode!= freeNode.getNextNode();
+        }
+
+        public T next(){
+            if(!hasNext())
+                throw new NoSuchElementException();
+            T result = currentNode.getData();
+            currentNode= currentNode.next;
+            return result;
+        }
+
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
     }
 
     private class Node{
@@ -91,4 +121,5 @@ public class TwoPartCircularLinkedQueue<T> implements QueueInterface<T>{
             next = nextNode;
         }
     }
+
 }
