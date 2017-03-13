@@ -3,6 +3,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Created by HiThereAndy on 3/10/2017.
@@ -126,17 +127,20 @@ public class ArrayDictionary<K, V> implements DictionaryInterface<K,V > {
     /** Creates an iterator that traverses all search keys in this dictionary.
      @return  An iterator that provides sequential access to the search
      keys in the dictionary. */
-//    public Iterator<K> getKeyIterator(){
+    public Iterator<K> getKeyIterator(){
+        Iterator<K> keyIterator = new KeyIterator();
+        return keyIterator;
 
 
-//    }// end getKeyIterator
+    }// end getKeyIterator
 
     /** Creates an iterator that traverses all values in this dictionary.
      @return  An iterator that provides sequential access to the values
      in this dictionary. */
-//    public Iterator<V> getValueIterator(){
-
-//    }// end getValueIterator
+    public Iterator<ArrayList<V>> getValueIterator(){
+        Iterator<ArrayList<V>> valueIterator = new ValueIterator();
+        return valueIterator;
+    }// end getValueIterator
 
     /** Sees whether this dictionary is empty.
      @return  True if the dictionary is empty. */
@@ -191,6 +195,77 @@ public class ArrayDictionary<K, V> implements DictionaryInterface<K,V > {
 
         private ArrayList<T> getValueList(){
             return valueList;
+        }
+    }
+
+    private class ValueIterator implements Iterator<ArrayList<V>>{
+
+        private int nextIndex;
+        private boolean wasNextCalled;
+
+        public ValueIterator(){
+            nextIndex = 0;
+            wasNextCalled =false;
+        }
+
+        public boolean hasNext(){
+            return nextIndex <= numberOfEntries;
+        }
+
+        public ArrayList<V> next(){
+            if(hasNext()){
+                wasNextCalled=true;
+                ArrayList<V> valueList = dictionary[nextIndex].getValueList();
+                nextIndex++;
+                return valueList;
+            }
+            else{
+                throw new NoSuchElementException("Illegal call to next()");
+            }
+        }
+
+        public void remove(){
+
+        }
+    }
+
+    private class KeyIterator implements Iterator<K>{
+
+        private int nextIndex;
+        private boolean wasNextCalled;
+
+        public KeyIterator(){
+            nextIndex = 0;
+            wasNextCalled = false;
+
+        }
+        public boolean hasNext(){
+            return nextIndex <= numberOfEntries;
+        }
+
+        public K next(){
+            if(hasNext()){
+                wasNextCalled = true;
+                K nextEntry = dictionary[nextIndex].getKey();
+                nextIndex++;
+                return nextEntry;
+            }
+            else{
+                throw new NoSuchElementException("Illegal call to next()");
+            }
+        }
+
+        public void remove(){
+            if(wasNextCalled){
+                dictionary[nextIndex-1] = dictionary[numberOfEntries];
+                dictionary[numberOfEntries] = null;
+                numberOfEntries--;
+                nextIndex--;
+                wasNextCalled = false;
+            }
+            else{
+                throw new IllegalStateException("Illegal to call remove()");
+            }
         }
     }
 }//end ArrayDictionary

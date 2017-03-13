@@ -36,12 +36,12 @@ public interface DictionaryInterface<K, V>
     /** Creates an iterator that traverses all search keys in this dictionary.
      @return  An iterator that provides sequential access to the search
      keys in the dictionary. */
-//    public Iterator<K> getKeyIterator();
+    public Iterator<K> getKeyIterator();
 
     /** Creates an iterator that traverses all values in this dictionary.
      @return  An iterator that provides sequential access to the values
      in this dictionary. */
-//    public Iterator<V> getValueIterator();
+    public Iterator<ArrayList<V>> getValueIterator();
 
     /** Sees whether this dictionary is empty.
      @return  True if the dictionary is empty. */
