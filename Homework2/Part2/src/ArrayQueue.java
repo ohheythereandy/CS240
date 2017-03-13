@@ -1,3 +1,6 @@
+import java.util.NoSuchElementException;
+import java.util.Iterator;
+
 /**
  * Created by Andy on 2/8/17.
  */
@@ -40,7 +43,7 @@ public class ArrayQueue<T> implements QueueInterface<T> {
     public T dequeue(){
         checkInitialization();
         if(isEmpty())
-            throw new EmptyQueueException();
+            throw new NoSuchElementException();
         else
         {
             T front = queue [frontIndex];
@@ -58,7 +61,7 @@ public class ArrayQueue<T> implements QueueInterface<T> {
         checkInitialization();
 
         if(isEmpty()){
-            throw new EmptyQueueException();
+            throw new NoSuchElementException();
         }
         else{
             return queue[frontIndex];
@@ -109,5 +112,27 @@ public class ArrayQueue<T> implements QueueInterface<T> {
             throw new IllegalStateException("Attempt to create a bag" +
                     "whose capacity exceeds allowed maximum of "
                     + MAX_CAPACITY);
+    }
+
+    public Iterator<T> getIterator(){
+        return new ArrayQueueIterator();
+    }
+
+    private class ArrayQueueIterator implements Iterator<T>{
+        private int index =0;
+
+        public boolean hasNext(){
+            return index <queue.length;
+        }
+        public T next(){
+            if(!hasNext())
+                throw new NoSuchElementException();
+            T result = queue[(index + frontIndex) % queue.length];
+            index++;
+            return result;
+        }
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
     }
 }
