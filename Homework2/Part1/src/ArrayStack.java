@@ -4,6 +4,8 @@
 
 import java.util.Arrays;
 import java.util.EmptyStackException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayStack<T> implements StackInterface<T> {
 
@@ -98,4 +100,38 @@ public class ArrayStack<T> implements StackInterface<T> {
 
     }
 
-}
+    public Iterator<T> iterator(){
+        return new ArrayStackIterator();
+    }
+
+    private class ArrayStackIterator implements Iterator<T>{
+        private int index;
+
+        public ArrayStackIterator(){
+            index = topIndex -1;
+        }
+
+        public boolean hasNext(){
+            return index >= 0;
+        }
+
+        public T next(){
+
+            T result ;
+
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
+            else{
+                result = stack[index];
+                index--;
+                return result;
+            }
+        }//end next()
+
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
+    }
+
+}//end Stack
