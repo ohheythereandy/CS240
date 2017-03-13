@@ -128,8 +128,7 @@ public class ArrayDictionary<K, V> implements DictionaryInterface<K,V > {
      @return  An iterator that provides sequential access to the search
      keys in the dictionary. */
     public Iterator<K> getKeyIterator(){
-        Iterator<K> keyIterator = new KeyIterator();
-        return keyIterator;
+        return new KeyIterator();
 
 
     }// end getKeyIterator
@@ -138,8 +137,7 @@ public class ArrayDictionary<K, V> implements DictionaryInterface<K,V > {
      @return  An iterator that provides sequential access to the values
      in this dictionary. */
     public Iterator<ArrayList<V>> getValueIterator(){
-        Iterator<ArrayList<V>> valueIterator = new ValueIterator();
-        return valueIterator;
+        return new ValueIterator();
     }// end getValueIterator
 
     /** Sees whether this dictionary is empty.
@@ -198,34 +196,39 @@ public class ArrayDictionary<K, V> implements DictionaryInterface<K,V > {
         }
     }
 
-    private class ValueIterator implements Iterator<ArrayList<V>>{
+    private class ValueIterator implements Iterator<ArrayList<V>> {
 
         private int nextIndex;
         private boolean wasNextCalled;
 
-        public ValueIterator(){
+        public ValueIterator() {
             nextIndex = 0;
-            wasNextCalled =false;
+            wasNextCalled = false;
         }
 
-        public boolean hasNext(){
+        public boolean hasNext() {
             return nextIndex <= numberOfEntries;
         }
 
-        public ArrayList<V> next(){
-            if(hasNext()){
-                wasNextCalled=true;
+        public ArrayList<V> next() {
+            if (hasNext()) {
+                wasNextCalled = true;
                 ArrayList<V> valueList = dictionary[nextIndex].getValueList();
                 nextIndex++;
                 return valueList;
-            }
-            else{
+            } else {
                 throw new NoSuchElementException("Illegal call to next()");
             }
         }
 
-        public void remove(){
-
+        public void remove() {
+            if (wasNextCalled) {
+                dictionary[nextIndex - 1] = dictionary[numberOfEntries];
+                dictionary[numberOfEntries] = null;
+                numberOfEntries--;
+                nextIndex--;
+                wasNextCalled = false;
+            } else throw new NoSuchElementException("illegal call to next()");
         }
     }
 
@@ -240,7 +243,7 @@ public class ArrayDictionary<K, V> implements DictionaryInterface<K,V > {
 
         }
         public boolean hasNext(){
-            return nextIndex <= numberOfEntries;
+            return nextIndex < numberOfEntries;
         }
 
         public K next(){
@@ -257,8 +260,8 @@ public class ArrayDictionary<K, V> implements DictionaryInterface<K,V > {
 
         public void remove(){
             if(wasNextCalled){
-                dictionary[nextIndex-1] = dictionary[numberOfEntries];
-                dictionary[numberOfEntries] = null;
+                dictionary[nextIndex-1] = dictionary[numberOfEntries-1];
+                dictionary[numberOfEntries-1] = null;
                 numberOfEntries--;
                 nextIndex--;
                 wasNextCalled = false;

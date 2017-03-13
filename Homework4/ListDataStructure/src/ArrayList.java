@@ -223,7 +223,7 @@ public class ArrayList<T> implements ListInterface<T> {
 
         private int index ;
 
-        public ArrayListIterator(){
+        public ArrayListIterator() {
             index = 0;
 
         }

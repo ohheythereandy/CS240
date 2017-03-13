@@ -107,7 +107,7 @@ public class ArrayStack<T> implements StackInterface<T> {
     private class ArrayStackIterator implements Iterator<T>{
         private int index;
 
-        public ArrayStackIterator(){
+        public ArrayStackIterator() {
             index = topIndex -1;
         }
 

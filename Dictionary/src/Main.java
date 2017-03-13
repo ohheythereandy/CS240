@@ -3,6 +3,7 @@
  */
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 public class Main {
 
     public static void main(String[] args){
@@ -17,9 +18,25 @@ public class Main {
         wordDict.add("Andy", "Buff");
         ArrayList andyList = wordDict.getValue("Andy");
 
+        wordDict.add("Forrest", "Phat");
+
         System.out.println(Arrays.toString(andyList.toArray()));
 
-        wordDict.remove("Andy");
-        System.out.println("The size of this dictionary is: " + wordDict.getSize());
+        Iterator<String> keyIterator = wordDict.getKeyIterator();
+
+        keyIterator.next();
+        keyIterator.remove();
+
+        Iterator<String> secondKeyIterator = wordDict.getKeyIterator();
+
+        while(secondKeyIterator.hasNext()){
+            System.out.println(secondKeyIterator.next());
+        }
+
+
+        //Iterator <ArrayList<String>> valueIterator = wordDict.getValueIterator();
+
+
+
     }
 }
