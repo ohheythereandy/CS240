@@ -1,4 +1,6 @@
 import java.util.EmptyStackException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Created by Andy on 2/7/17.
@@ -57,6 +59,10 @@ public final class LinkedStack<T> implements StackInterface<T> {
         topNode = null;
     }
 
+    public Iterator<T> getIterator(){
+        return new LinkedStackIterator();
+    }
+
     private class Node{
         private T data ; //Entry in Stack
         private Node next ; // Link to next node
@@ -86,4 +92,28 @@ public final class LinkedStack<T> implements StackInterface<T> {
             next = nextNode;
         }
     }
+
+    private class LinkedStackIterator implements Iterator<T>{
+
+        private Node currentNode = topNode;
+
+        public boolean hasNext(){
+            return currentNode != null;
+        }
+
+        public T next(){
+            if(!hasNext())
+                throw new NoSuchElementException();
+            else{
+                T data = currentNode.getData();
+                currentNode = currentNode.next;
+                return data;
+            }
+        }
+
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
+    }
+
 }
