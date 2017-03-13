@@ -1,6 +1,9 @@
 /**
  * Created by Andy on 3/5/17.
  */
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public class ArrayList<T> implements ListInterface<T> {
 
     private T[] list;
@@ -211,4 +214,37 @@ public class ArrayList<T> implements ListInterface<T> {
         }
 
     }
-}
+
+    public Iterator<T> getArrayListIterator(){
+        return new ArrayListIterator();
+    }
+
+    private class ArrayListIterator implements Iterator<T>{
+
+        private int index ;
+
+        public ArrayListIterator(){
+            index = 0;
+
+        }
+        public boolean hasNext(){
+           return index <= numberOfEntries;
+        }
+
+        public T next(){
+            T result;
+            if(!hasNext())
+                throw new NoSuchElementException();
+            else{
+                result = list[index];
+                index++;
+                return result;
+            }
+        }
+
+        public void remove(){
+            throw new NoSuchElementException();
+        }
+
+    }// end ArrayListIterator
+}//end ArrayList
